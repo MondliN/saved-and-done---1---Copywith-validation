@@ -1,0 +1,114 @@
+﻿@model WebApplication2.Models.Registration_dbo
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<div class="imgcontainer">
+
+    <img src="~/images/Pic202.png" class="img-responsive center-block" style="width:1700px; height:150px">
+
+</div>
+<div class="jumbotron alert alert-success alert-dismissable ">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <h2 style="text-align: center">Please provide information on the below fields</h2>
+</div>
+
+
+<div class="panel panel-danger"/>
+    <div class="panel-heading ">
+        <h3 style="text-align: center">Registration Form</h3>
+    </div>
+
+    <div class="panel-body panel-success"/>
+
+        <div class="panel-heading ">
+
+            @using (Html.BeginForm("Register", "home", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    @Html.TextBoxFor(a => a.Uniquename)
+                    <div class="col-md-4">
+                        @Html.Label("Enter Unique Name")
+
+                        <span class="help-block"></span>
+                    </div>
+                   
+                    @Html.ValidationMessageFor(a => a.Uniquename, null, new { style = "color:blue" })
+                </div>
+
+                <div class="form-group">
+                        @Html.TextBoxFor(a => a.Last_Name)
+                        <div class="col-md-4">
+                            @Html.Label("Enter Last Name")
+
+                            <span class="help-block"></span>
+                        </div>
+                        @Html.ValidationMessageFor(a => a.Last_Name, null, new { style = "color:blue" })
+                    </div>
+
+
+
+                <div class="form-group">
+                    @Html.PasswordFor(a => a.Password)
+                    <div class="col-md-4">
+                        @Html.Label("Enter Password")
+
+                        <span class="help-block"></span>
+                    </div>
+                  
+                    @Html.ValidationMessageFor(a => a.Password, null, new { style = "color:blue" })
+                </div>
+
+
+                @*<div class="form-group">
+                    @Html.PasswordFor(a => a.Cnfpassword)
+                    <div class="col-md-4">
+                        @Html.Label("Confirm Password")
+
+                        <span class="help-block"></span>
+                    </div>
+                    @Html.ValidationMessageFor(a => a.Cnfpassword, null, new { style = "color:blue" })
+                </div>*@
+
+
+
+
+
+                            <div class="form-group">
+                                @Html.TextBoxFor(a => a.Email)
+                                <div class="col-md-4">
+                                    @Html.Label("Enter Email")
+
+                                    <span class="help-block"></span>
+                                </div>
+                               
+                                @Html.ValidationMessageFor(a => a.Email, null, new { style = "color:blue" })
+                            </div>
+
+
+
+                            <div class="form-group">
+                                @Html.TextBoxFor(a => a.MobileNo)
+                                <div class="col-md-4">
+                                    @Html.Label("Enter MobileNo")
+
+                                    <span class="help-block"></span>
+                                   
+                                    @Html.ValidationMessageFor(a => a.MobileNo, null, new { style = "color:blue" })
+                                </div>
+                            </div>
+                                    <input type="submit" id="submitbtn" value="Submit" style="color: purple" />
+                                        <input type="submit" id="backbtn" value="Back" style="color: purple"   @Html.ActionLink("Register as a new user", "Login")/>
+                                        <label class="alert-info" title="submited"/>
+
+
+
+            }
+
+        </div>
+
+
+
+

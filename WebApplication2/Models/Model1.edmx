@@ -1,0 +1,480 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Association">
+          <Key>
+            <PropertyRef Name="AssocID" />
+          </Key>
+          <Property Name="AssocID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyID" Type="int" Nullable="false" />
+          <Property Name="AssocType" Type="int" Nullable="false" />
+          <Property Name="AssPercent" Type="float" Nullable="false" />
+          <Property Name="DirectRel" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="UpdateDate" Type="date" Nullable="false" />
+          <Property Name="ChangeDate" Type="date" Nullable="false" />
+          <Property Name="NoShares_YN" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AssociationType">
+          <Key>
+            <PropertyRef Name="AssocType" />
+          </Key>
+          <Property Name="AssocType" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="225" Nullable="false" />
+          <Property Name="UpdateDate" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompanyName">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExchangeCode" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="CompanyName" Type="nchar" MaxLength="225" Nullable="false" />
+          <Property Name="ShortCode" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="CorpInfo" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="CountryID" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="BusinessSectorID" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="CompanyTypeID" Type="int" Nullable="false" />
+          <Property Name="UpdateDate" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompanyType">
+          <Key>
+            <PropertyRef Name="CompanyTypeID" />
+          </Key>
+          <Property Name="CompanyTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyTypeDesc" Type="varchar" MaxLength="20" />
+          <Property Name="UpdateDate" Type="date" />
+        </EntityType>
+        <EntityType Name="Exchange">
+          <Key>
+            <PropertyRef Name="ExchangeCode" />
+          </Key>
+          <Property Name="ExchangeCode" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="ExchangeName" Type="nchar" MaxLength="100" Nullable="false" />
+          <Property Name="CountryID" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="UpdateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Registration_dbo">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Uniquename" Type="varchar" MaxLength="50" />
+          <Property Name="Last Name" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="MobileNo" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Association_Association">
+          <End Role="AssociationType" Type="Self.AssociationType" Multiplicity="1" />
+          <End Role="Association" Type="Self.Association" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssociationType">
+              <PropertyRef Name="AssocType" />
+            </Principal>
+            <Dependent Role="Association">
+              <PropertyRef Name="AssocType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Association_CompanyName">
+          <End Role="CompanyName" Type="Self.CompanyName" Multiplicity="1" />
+          <End Role="Association" Type="Self.Association" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyName">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="Association">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyName_CompanyType">
+          <End Role="CompanyType" Type="Self.CompanyType" Multiplicity="1" />
+          <End Role="CompanyName" Type="Self.CompanyName" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyType">
+              <PropertyRef Name="CompanyTypeID" />
+            </Principal>
+            <Dependent Role="CompanyName">
+              <PropertyRef Name="CompanyTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyName_Exchange">
+          <End Role="Exchange" Type="Self.Exchange" Multiplicity="1" />
+          <End Role="CompanyName" Type="Self.CompanyName" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exchange">
+              <PropertyRef Name="ExchangeCode" />
+            </Principal>
+            <Dependent Role="CompanyName">
+              <PropertyRef Name="ExchangeCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Login_Registration_dbo">
+          <End Role="Registration_dbo" Type="Self.Registration_dbo" Multiplicity="1" />
+          <End Role="Login" Type="Self.Login" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Registration_dbo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Login">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="Association" EntityType="Self.Association" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AssociationType" EntityType="Self.AssociationType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompanyName" EntityType="Self.CompanyName" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompanyType" EntityType="Self.CompanyType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Exchange" EntityType="Self.Exchange" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Registration_dbo" EntityType="Self.Registration_dbo" Schema="dbo" Table="Registration.dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Association_Association" Association="Self.FK_Association_Association">
+            <End Role="AssociationType" EntitySet="AssociationType" />
+            <End Role="Association" EntitySet="Association" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Association_CompanyName" Association="Self.FK_Association_CompanyName">
+            <End Role="CompanyName" EntitySet="CompanyName" />
+            <End Role="Association" EntitySet="Association" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyName_CompanyType" Association="Self.FK_CompanyName_CompanyType">
+            <End Role="CompanyType" EntitySet="CompanyType" />
+            <End Role="CompanyName" EntitySet="CompanyName" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyName_Exchange" Association="Self.FK_CompanyName_Exchange">
+            <End Role="Exchange" EntitySet="Exchange" />
+            <End Role="CompanyName" EntitySet="CompanyName" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Login_Registration_dbo" Association="Self.FK_Login_Registration_dbo">
+            <End Role="Registration_dbo" EntitySet="Registration_dbo" />
+            <End Role="Login" EntitySet="Login" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Association">
+          <Key>
+            <PropertyRef Name="AssocID" />
+          </Key>
+          <Property Name="AssocID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyID" Type="Int32" Nullable="false" />
+          <Property Name="AssocType" Type="Int32" Nullable="false" />
+          <Property Name="AssPercent" Type="Double" Nullable="false" />
+          <Property Name="DirectRel" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ChangeDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NoShares_YN" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="AssociationType" Relationship="Self.FK_Association_Association" FromRole="Association" ToRole="AssociationType" />
+          <NavigationProperty Name="CompanyName" Relationship="Self.FK_Association_CompanyName" FromRole="Association" ToRole="CompanyName" />
+        </EntityType>
+        <EntityType Name="AssociationType">
+          <Key>
+            <PropertyRef Name="AssocType" />
+          </Key>
+          <Property Name="AssocType" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="225" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Associations" Relationship="Self.FK_Association_Association" FromRole="AssociationType" ToRole="Association" />
+        </EntityType>
+        <EntityType Name="CompanyName">
+          <Key>
+            <PropertyRef Name="CompanyID" />
+          </Key>
+          <Property Name="CompanyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExchangeCode" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="CompanyName1" Type="String" MaxLength="225" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ShortCode" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="CorpInfo" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="CountryID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="BusinessSectorID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="CompanyTypeID" Type="Int32" Nullable="false" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Associations" Relationship="Self.FK_Association_CompanyName" FromRole="CompanyName" ToRole="Association" />
+          <NavigationProperty Name="CompanyType" Relationship="Self.FK_CompanyName_CompanyType" FromRole="CompanyName" ToRole="CompanyType" />
+          <NavigationProperty Name="Exchange" Relationship="Self.FK_CompanyName_Exchange" FromRole="CompanyName" ToRole="Exchange" />
+        </EntityType>
+        <EntityType Name="CompanyType">
+          <Key>
+            <PropertyRef Name="CompanyTypeID" />
+          </Key>
+          <Property Name="CompanyTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyTypeDesc" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="CompanyNames" Relationship="Self.FK_CompanyName_CompanyType" FromRole="CompanyType" ToRole="CompanyName" />
+        </EntityType>
+        <EntityType Name="Exchange">
+          <Key>
+            <PropertyRef Name="ExchangeCode" />
+          </Key>
+          <Property Name="ExchangeCode" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ExchangeName" Type="String" MaxLength="100" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="CountryID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="UpdateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="CompanyNames" Relationship="Self.FK_CompanyName_Exchange" FromRole="Exchange" ToRole="CompanyName" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Registration_dbo" Relationship="Self.FK_Login_Registration_dbo" FromRole="Login" ToRole="Registration_dbo" />
+        </EntityType>
+        <EntityType Name="Registration_dbo">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Uniquename" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Last_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MobileNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Login" Relationship="Self.FK_Login_Registration_dbo" FromRole="Registration_dbo" ToRole="Login" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Association_Association">
+          <End Role="AssociationType" Type="Self.AssociationType" Multiplicity="1" />
+          <End Role="Association" Type="Self.Association" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssociationType">
+              <PropertyRef Name="AssocType" />
+            </Principal>
+            <Dependent Role="Association">
+              <PropertyRef Name="AssocType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Association_CompanyName">
+          <End Role="CompanyName" Type="Self.CompanyName" Multiplicity="1" />
+          <End Role="Association" Type="Self.Association" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyName">
+              <PropertyRef Name="CompanyID" />
+            </Principal>
+            <Dependent Role="Association">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyName_CompanyType">
+          <End Role="CompanyType" Type="Self.CompanyType" Multiplicity="1" />
+          <End Role="CompanyName" Type="Self.CompanyName" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyType">
+              <PropertyRef Name="CompanyTypeID" />
+            </Principal>
+            <Dependent Role="CompanyName">
+              <PropertyRef Name="CompanyTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyName_Exchange">
+          <End Role="Exchange" Type="Self.Exchange" Multiplicity="1" />
+          <End Role="CompanyName" Type="Self.CompanyName" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exchange">
+              <PropertyRef Name="ExchangeCode" />
+            </Principal>
+            <Dependent Role="CompanyName">
+              <PropertyRef Name="ExchangeCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Login_Registration_dbo">
+          <End Role="Registration_dbo" Type="Self.Registration_dbo" Multiplicity="1" />
+          <End Role="Login" Type="Self.Login" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Registration_dbo">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Login">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Subsidiaries_Entities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Associations" EntityType="Self.Association" />
+          <EntitySet Name="AssociationTypes" EntityType="Self.AssociationType" />
+          <EntitySet Name="CompanyNames" EntityType="Self.CompanyName" />
+          <EntitySet Name="CompanyTypes" EntityType="Self.CompanyType" />
+          <EntitySet Name="Exchanges" EntityType="Self.Exchange" />
+          <EntitySet Name="Logins" EntityType="Self.Login" />
+          <EntitySet Name="Registration_dbo" EntityType="Self.Registration_dbo" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK_Association_Association" Association="Self.FK_Association_Association">
+            <End Role="AssociationType" EntitySet="AssociationTypes" />
+            <End Role="Association" EntitySet="Associations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Association_CompanyName" Association="Self.FK_Association_CompanyName">
+            <End Role="CompanyName" EntitySet="CompanyNames" />
+            <End Role="Association" EntitySet="Associations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyName_CompanyType" Association="Self.FK_CompanyName_CompanyType">
+            <End Role="CompanyType" EntitySet="CompanyTypes" />
+            <End Role="CompanyName" EntitySet="CompanyNames" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyName_Exchange" Association="Self.FK_CompanyName_Exchange">
+            <End Role="Exchange" EntitySet="Exchanges" />
+            <End Role="CompanyName" EntitySet="CompanyNames" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Login_Registration_dbo" Association="Self.FK_Login_Registration_dbo">
+            <End Role="Registration_dbo" EntitySet="Registration_dbo" />
+            <End Role="Login" EntitySet="Logins" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Subsidiaries_Entities1">
+          <EntitySetMapping Name="Associations">
+            <EntityTypeMapping TypeName="Model.Association">
+              <MappingFragment StoreEntitySet="Association">
+                <ScalarProperty Name="AssocID" ColumnName="AssocID" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="AssocType" ColumnName="AssocType" />
+                <ScalarProperty Name="AssPercent" ColumnName="AssPercent" />
+                <ScalarProperty Name="DirectRel" ColumnName="DirectRel" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+                <ScalarProperty Name="ChangeDate" ColumnName="ChangeDate" />
+                <ScalarProperty Name="NoShares_YN" ColumnName="NoShares_YN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AssociationTypes">
+            <EntityTypeMapping TypeName="Model.AssociationType">
+              <MappingFragment StoreEntitySet="AssociationType">
+                <ScalarProperty Name="AssocType" ColumnName="AssocType" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompanyNames">
+            <EntityTypeMapping TypeName="Model.CompanyName">
+              <MappingFragment StoreEntitySet="CompanyName">
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="ExchangeCode" ColumnName="ExchangeCode" />
+                <ScalarProperty Name="CompanyName1" ColumnName="CompanyName" />
+                <ScalarProperty Name="ShortCode" ColumnName="ShortCode" />
+                <ScalarProperty Name="CorpInfo" ColumnName="CorpInfo" />
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+                <ScalarProperty Name="BusinessSectorID" ColumnName="BusinessSectorID" />
+                <ScalarProperty Name="CompanyTypeID" ColumnName="CompanyTypeID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompanyTypes">
+            <EntityTypeMapping TypeName="Model.CompanyType">
+              <MappingFragment StoreEntitySet="CompanyType">
+                <ScalarProperty Name="CompanyTypeID" ColumnName="CompanyTypeID" />
+                <ScalarProperty Name="CompanyTypeDesc" ColumnName="CompanyTypeDesc" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Exchanges">
+            <EntityTypeMapping TypeName="Model.Exchange">
+              <MappingFragment StoreEntitySet="Exchange">
+                <ScalarProperty Name="ExchangeCode" ColumnName="ExchangeCode" />
+                <ScalarProperty Name="ExchangeName" ColumnName="ExchangeName" />
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Logins">
+            <EntityTypeMapping TypeName="Model.Login">
+              <MappingFragment StoreEntitySet="Login">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Registration_dbo">
+            <EntityTypeMapping TypeName="Model.Registration_dbo">
+              <MappingFragment StoreEntitySet="Registration_dbo">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Uniquename" ColumnName="Uniquename" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Model.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
